@@ -1,3 +1,5 @@
+#based on https://mendeleev.readthedocs.io/en/stable/notebooks/advanced_visualizations.html#Custom-properties
+
 import numpy as np
 from mendeleev import element
 
@@ -17,5 +19,11 @@ from mendeleev.vis import create_vis_dataframe, periodic_table_plotly
 import matplotlib.pyplot as plt
 
 elements = create_vis_dataframe()
-fig = periodic_table_plotly(elements)
-fig.write_image("temp.png")
+#fig = periodic_table_plotly(elements)
+
+
+elements.loc[:, 'ENX-ENO'] =  elements.loc[elements['symbol'] == 'N', 'en_allen'].values - elements.loc[:, 'en_allen']
+
+fig = periodic_table_plotly(elements, attribute='ENX-ENO', colorby='attribute',
+              cmap='bwr', title='Allen Electronegativity wrt. Nitrogen')
+fig.write_image("en_vs_N.png")
